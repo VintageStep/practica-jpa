@@ -11,8 +11,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import com.devpredator.practicajpa.dao.RestauranteDAO;
-import com.devpredator.practicajpa.entity.Restaurante;
+import com.devpredator.practicajpa.dao.TipoRestauranteDAO;
+import com.devpredator.practicajpa.entity.TipoRestaurante;
 
 /**
  * @author VintageStep 
@@ -20,13 +20,15 @@ import com.devpredator.practicajpa.entity.Restaurante;
  * Clase que implementa el CRUD para las transacciones para
  * la tabla de restaurante.
  */
-public class RestauranteDAOImpl implements RestauranteDAO{
+
+
+public class TipoRestauranteDAOImpl implements TipoRestauranteDAO{
 	
 	private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-			.createEntityManagerFactory("persistenceDevPredator");
+			.createEntityManagerFactory("persistenceDevPredator");	
 
 	@Override
-	public void guardar(Restaurante restaurante) {
+	public void guardar(TipoRestaurante tipoRestaurante) {
 		EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 		
 		EntityTransaction et = em.getTransaction();
@@ -34,7 +36,8 @@ public class RestauranteDAOImpl implements RestauranteDAO{
 		et.begin();
 		
 		try {
-			em.persist(restaurante);
+			
+			em.persist(tipoRestaurante);
 			et.commit();
 		} catch (Exception e) {
 			if (et != null) {
@@ -44,10 +47,11 @@ public class RestauranteDAOImpl implements RestauranteDAO{
 		} finally {
 			em.close();
 		}	
+		
 	}
 
 	@Override
-	public void actualizar(Restaurante restaurante) {
+	public void actualizar(TipoRestaurante tipoRestaurante) {
 		EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 		
 		EntityTransaction et = em.getTransaction();
@@ -55,7 +59,7 @@ public class RestauranteDAOImpl implements RestauranteDAO{
 		et.begin();
 		
 		try {
-			em.merge(restaurante);
+			em.merge(tipoRestaurante);
 			et.commit();
 		} catch (Exception e) {
 			if (et != null) {
@@ -65,20 +69,22 @@ public class RestauranteDAOImpl implements RestauranteDAO{
 		} finally {
 			em.close();
 		}	
+		
+		
 	}
 
 	@Override
 	public void eliminar(Long id) {
 		EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 		
-		Restaurante restauranteConsultado = em.find(Restaurante.class, id);
+		TipoRestaurante tipoRestauranteConsultado = em.find(TipoRestaurante.class, id);
 		
 		EntityTransaction et = em.getTransaction();	
 		
 		et.begin();
 		
 		try {
-			em.remove(restauranteConsultado);
+			em.remove(tipoRestauranteConsultado);
 			et.commit();
 		} catch (Exception e) {
 			if (et != null) {
@@ -88,22 +94,25 @@ public class RestauranteDAOImpl implements RestauranteDAO{
 		} finally {
 			em.close();
 		}
+		
 	}
 
 	@Override
-	public List<Restaurante> consultar() {
+	public List<TipoRestaurante> consultar() {
 		EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 		
-		TypedQuery<Restaurante> typedQuery = (TypedQuery<Restaurante>) em.createQuery("FROM Restaurante ORDER BY nombre");
+		TypedQuery<TipoRestaurante> typedQuery = (TypedQuery<TipoRestaurante>) em.createQuery("FROM TipoRestaurante ORDER BY descripcion");
 		
 		return typedQuery.getResultList();
 	}
 
 	@Override
-	public Restaurante consultarById(Long id) {
+	public TipoRestaurante consultarById(Long id) {
 		EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
 		
-		return em.find(Restaurante.class, id);
+		return em.find(TipoRestaurante.class, id);
 	}
+	
+	
 
 }
